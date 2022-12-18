@@ -1,10 +1,10 @@
-import pygame, sys
+import pygame, sys, os
 from datafile import *
 from pygame.locals import *
 import pygame.mixer
 
 
-class Game :
+class Game:
     def __init__(self):
         pygame.init()
         pygame.mixer.init()
@@ -18,7 +18,7 @@ class Game :
 
         # 스프라이트 시트에서 이미지 로드
         self.spriteSheet_player = SpriteSheet('spriteSheet1.png', 16, 16, 8, 8, 12)
-        self.spriteSheet_background = SpritSheet('spriteSheet2.png', 8, 8, 16, 16,87)
+        self.spriteSheet_background = SpritSheet('spriteSheet3.png', 8, 8, 16, 16, 87)
 
         self.spr_player = {}
         self.spr_player['stay'] = createSpriteSet(self.spriteSheet_player, [0])
@@ -27,7 +27,7 @@ class Game :
 
         self.background = createBackground(self.spriteSheet_background)
 
-        self.player_rect = pygame.Rect((TILE_MAPiSIZE[0] * 4, TILE_MAPSIZE[1] * 4 - 14), (6, 14)) # 플레이어 화면에서 고정
+        #self.player_rect = pygame.Rect((TILE_MAPiSIZE[0] * 4, TILE_MAPSIZE[1] * 4 - 14), (6, 14)) # 플레이어 화면에서 고정
         self.player_movement = [0, 0]
         self.player_vspeed = 0 # y 가속도
         self.player_flytime = 0 # 공중에 뜬 시간
@@ -78,10 +78,10 @@ class Game :
                 #if event.type == # 좋은 자세
                 #   self.gameScore += 5
 
-            surf = pygame.transfom.scale(self.screen_scaled, WINDOW_SIZE) # 윈도우 창모드
+            surf = pygame.transfom.scale(self.screen, WINDOW_SIZE) # 윈도우 창모드
             self.screen.blit(surf, (0, 0))
 
             pygame.display.update()
-            self.clock.tick(60) #60프레임 제한
+            self.clock.tick(60) # 60프레임 제한
 
-game = Game() #게임 실행
+game = Game() # 게임 실행
