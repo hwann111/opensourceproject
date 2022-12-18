@@ -7,13 +7,15 @@ mp_pose = mp.solutions.pose
 
 #거북목 정도 변수
 turtle = None
+turtle_state = 0
 
 #어깨 틀어짐 정도 변수
 twist = None
+twist_state = 0
 
 #라운드숄더 변수
 roundshoulder = None
-
+roundshoulder_state = 0
 
 cap = cv2.VideoCapture(0)
 
@@ -116,14 +118,22 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
             # Curl counter logic
             if rate_sh>1 and init_ly < l_y and init_ry < r_y:
                 turtle = "Turtle O"
+                turtle_state=1
             elif init_ly < l_y and init_ry < r_y and rate_sh <= 1:
                 turtle = "Round and Turtle"
+                turtle_state = 1
+                roundshoulder_state = 1
             else:
                 turtle = "Turtle X"
+                turtle_state = 0
+                roundshoulder_state = 0
+
             if angle > 10:
                 twist = "Twist O"
+                twist_state = 1
             else:
                 twist = "Twist X"
+                twist_state = 0
 
 
 

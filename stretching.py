@@ -2,7 +2,7 @@ import cv2
 import mediapipe as mp
 import numpy as np
 from time import sleep
-from PIL import ImageFont, ImageDraw, Image
+# from PIL import ImageFont, ImageDraw, Image
 
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose

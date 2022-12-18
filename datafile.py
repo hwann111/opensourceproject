@@ -1,8 +1,7 @@
 import pygame, os, random
 
-DIR_PATH = os.path.dirname(__file__) # 파일 위치
-DIR_IMAGE = os.path.join(DIR_PATH, 'image')
-DIR_FONT = os.path.join(DIR_PATH, 'font')
+DIR_IMAGE = 'img'
+DIR_FONT = 'font'
 
 WINDOW_SIZE = (960, 640)
 TILE_SIZE = 8
@@ -11,7 +10,7 @@ BACKGROUND_COLOR = (27, 25, 25)
 DEAFAULT_FONT_NAME = "a인생책방T.ttf"
 
 # 스프라이트 시트 클래스
-class SpritSheet:
+class SpriteSheet:
     def __init__(self, filename, width, height, max_row, max_col, max_index):
         baseImage = pygame.image.load(os.path.join(DIR_IMAGE, filename)).convert()
         self.spr = []
@@ -26,20 +25,20 @@ class SpritSheet:
             self.spr.append(image)
 
     # 스프라이트 세트 생성 함수
-    def createSpriteSet(spriteSheet, index_list, index_max = None):
+    def createSpriteSet(self, index_list, index_max = None):
         spr = []
 
         if index_max == None:
             for index in index_list:
-                spr.append(spriteSheet.spr[index])
+                spr.append(self.spr[index])
         else:
             for index in range(index_list, index_max + 1):
-                spr.append(spriteSheet.spr[index])
+                spr.append(self.spr[index])
         return spr
 
 #텍스트 드로우 함수
 def draw_text(screen, text, size, color, x, y):
-    gameFont = pygame.font.Font(os.path.join(DIR_FONT, DEFAULT_FONT_NAME), size)
+    gameFont = pygame.font.Font(os.path.join(DIR_FONT, DEAFAULT_FONT_NAME), size)
     text_surface = gameFont.render(text, False, color)
     text_rect = text_surface.get_rect()
     text_rect.midtop = (round(x), round(y))
