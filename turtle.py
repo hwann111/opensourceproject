@@ -1,6 +1,7 @@
 import cv2
 import mediapipe as mp
 import numpy as np
+import  time
 
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
@@ -12,6 +13,9 @@ turtle_state = 0
 #어깨 틀어짐 정도 변수
 twist = None
 twist_state = 0
+plustime = 0
+minustime = 0
+
 
 #라운드숄더 변수
 roundshoulder = None
@@ -59,6 +63,8 @@ def shouderAngle(a, b):
 with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
     while cap.isOpened():
         ret, frame = cap.read()
+        if not ret:
+            break
 
         # Recolor image to RGB
         image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -115,25 +121,41 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
 
             rate_sh = dist_sh / init_sh
 
-            # Curl counter logic
+            #자세상태
+
             if rate_sh>1 and init_ly < l_y and init_ry < r_y:
-                turtle = "Turtle O"
-                turtle_state=1
+                    turtle = "Turtle O"
+                    turtle_state=1
+                    start = time.time()
             elif init_ly < l_y and init_ry < r_y and rate_sh <= 1:
-                turtle = "Round and Turtle"
-                turtle_state = 1
-                roundshoulder_state = 1
+                    turtle = "Round and Turtle"
+                    turtle_state = 1
+                    roundshoulder_state = 1
             else:
-                turtle = "Turtle X"
-                turtle_state = 0
-                roundshoulder_state = 0
+                    turtle = "Turtle X"
+                    turtle_state = 0
+                    roundshoulder_state = 0
 
             if angle > 10:
-                twist = "Twist O"
-                twist_state = 1
+                    twist = "Twist O"
+                    twist_state = 1
             else:
-                twist = "Twist X"
-                twist_state = 0
+                    twist = "Twist X"
+                    twist_state = 0
+
+            if turtle_state:
+                start_turtle = time.time()
+            elif not turtle_state:
+                minustime = minustime - time.time() + start_turtle
+            if roundshoulder_state:
+                start_round = time.time()
+            elif not start_round:
+                minustime = minustime - time.time() + start_round
+            if twist_state:
+                start_twist = time.time()
+            elif not twist_state:
+                minustime = minustime - time.time() + start_twist
+
 
 
 
@@ -161,6 +183,9 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
         cv2.imshow('Mediapipe Feed', image)
 
         if cv2.waitKey(10) & 0xFF == ord('q'):
+            turtle_state = 0
+            roundshoulder_state = 0
+            twist = 0
             break
 
     cap.release()

@@ -1,8 +1,12 @@
+import datetime
+
 import pygame, sys, os
 from datafile import *
 from pygame.locals import *
 import pygame.mixer
 from turtle import *
+from stretching import *
+import math
 
 
 class Game:
@@ -51,6 +55,8 @@ class Game:
             self.screen.blit(self.spriteSheet_player.spr[0], (320, 240))
             # self.screen.blit(self.spriteSheet_enemy.spr[0], (320, 240))
 
+
+
         # 플레이어
             self.player_movement = [0, 0]
             self.player_movement[1] += self.player_vspeed
@@ -68,25 +74,37 @@ class Game:
         #     self.enemy_vspeed += 0.2
         #     if self.enemy_vspeed > 3:
         #         self.enemy_vspeed = 3
-            if turtle_state or roundshoulder_state or twist_state:
-                self.gameScore -= 10
-            else:
-                self.gameScore += 5
+
+            #자세에 따른 어드벤티지
+            minus = math.trunc(minustime)
+
+            # #자세 상태 출력
+            # text_color = 255, 255, 255
+            # font = pygame.font.SysFont("arial", 30, True, True)
+            # text = font.render(twist, True, text_color)
+            #
+            # self.screen.bilt(text, (100, 100))
 
         # 이벤트
             for event in pygame.event.get():
                 if event.type == QUIT:
                     pygame.quit()
                     sys.exit()
-                #if event.type ==  안좋은 자세
-                #    self.gameScore -= 10
+                if event.type == pygame.K_1:
+                    self.gameScore -= minus
+
                 #if event.type == # 좋은 자세
                 #   self.gameScore += 5
 
             surf = pygame.transform.scale(self.screen, WINDOW_SIZE) # 윈도우 창모드
             self.screen.blit(surf, (0, 0))
 
+            # img = pygame.surfarray.make_surface(image)
+            # self.screen.blit(img, (0, 0))
+
             pygame.display.update()
             self.clock.tick(60) # 60프레임 제한
+
+
 
 game = Game() # 게임 실행
